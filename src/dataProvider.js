@@ -8,11 +8,32 @@ const addProduct = 'api/product/create';
 const editProduct = 'api/product/update';
 const getProduct = 'api/product/';
 const deleteProduct = 'api/product/'
+const getStore = 'api/store/';
+
+
+
+
 
 export default {
     getList: (resource, params) => {
         switch(resource){
             case 'products': {
+                const {page, perPage} = params.pagination;
+                const {field, order} = params.sort;
+                const query = {
+                    sort: JSON.stringify([field, order]),
+                    range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+                    filter: JSON.stringify(params.filter),
+                };
+                const url = apiUrl + "/" + resource + "?" + stringify(query);
+
+                return httpClient(url).then(({headers, json}) => ({
+                    data: json.products,
+                    total: json.numOfProducts
+                }));
+
+            }
+            case 'stores': {
                 const {page, perPage} = params.pagination;
                 const {field, order} = params.sort;
                 const query = {
@@ -88,6 +109,6 @@ export default {
             var json = _a.json;
             return ({ data: json });
         });
-    }
+    },
 }
 //total: parseInt(headers.get('content-range').split('/').pop(), 10)
