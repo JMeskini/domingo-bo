@@ -8,7 +8,7 @@ const addProduct = 'api/product/create';
 const editProduct = 'api/product/update';
 const getProduct = 'api/product/';
 const deleteProduct = 'api/product/'
-const getStore = 'api/store/';
+const getStore = '/store/1';
 
 
 
@@ -41,11 +41,11 @@ export default {
                     range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
                     filter: JSON.stringify(params.filter),
                 };
-                const url = apiUrl + "/" + resource + "?" + stringify(query);
+                const url = apiUrl + getStore;
 
                 return httpClient(url).then(({headers, json}) => ({
-                    data: json.products,
-                    total: json.numOfProducts
+                    data: json.stores,
+                    total: json.totalStores
                 }));
 
             }
